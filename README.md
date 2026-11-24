@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Diamond Academy — Ota-onalar kabineti (alohida Next.js loyiha)
 
-## Getting Started
-
-First, run the development server:
+## O'rnatish
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx create-next-app@latest parent-portal
+# TypeScript: Yes, Tailwind: Yes, ESLint: Yes, src/ directory: Yes, App Router: Yes, alias: @/*
+
+cd parent-portal
+npm i axios @tanstack/react-query lucide-react
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Shu arxivdagi `src/` papkasini loyihangizdagi `src/` ustiga ko'chiring (almashtiring).
+2. `src/app/globals.css` ni almashtiring:
+   - **Tailwind v4**:
+     ```css
+     @import "tailwindcss";
+     body { background: #f9fafb; color: #111827; }
+     ```
+   - **Tailwind v3**:
+     ```css
+     @tailwind base;
+     @tailwind components;
+     @tailwind utilities;
+     body { background: #f9fafb; color: #111827; }
+     ```
+3. `.env.local` yarating:
+   ```
+   NEXT_PUBLIC_API_URL=https://SIZNING-BACKEND.up.railway.app
+   ```
+4. Backend `main.ts` dagi CORS ga yangi frontend manzilini (Vercel domeni va `http://localhost:3000`) qo'shing.
+5. `npm run dev` → http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Vercel
+Yangi repo → Vercel'ga import → Environment Variables: `NEXT_PUBLIC_API_URL`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Sahifalar
+- `/login` — kirish / ro'yxatdan o'tish
+- `/parent` — farzandlar ro'yxati va so'rov holati
+- `/parent/add` — guruh → o'quvchi → so'rov yuborish
+- `/parent/child/[studentId]` — statistika (davomat, olmos, to'lov, imtihon)
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Eslatma
+Backend `POST /parent/register` akkaunt yo'q bo'lsa avtomatik yaratadi. Kirish rejimida
+noto'g'ri telefon kiritilsa, yangi akkaunt ochilib ketishi mumkin. Xohlasangiz backendga
+alohida `POST /parent/login` qo'shib, `parentApi.ts` ni shunga o'tkazish mumkin.
+Token 1 kunlik: muddati tugasa avtomatik `/login` ga qaytariladi.
